@@ -1,0 +1,242 @@
+actor: "Conti"
+description: "Conti ransomware group (Wizard Spider / TrickBot) indicators"
+references:
+  - "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+  - "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+indicators:
+  # Process names
+  - type: process_name
+    value: "conti.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti ransomware primary payload"
+  - type: process_name
+    value: "locker.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti encryption binary variant"
+  - type: process_name
+    value: "cobaltgroup.exe"
+    severity: high
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti affiliate Cobalt Strike beacon"
+  - type: process_name
+    value: "ryuk.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Ryuk — predecessor payload shared with Conti infrastructure"
+  - type: process_name
+    value: "trickbot.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "TrickBot initial access trojan used by Conti"
+  - type: process_name
+    value: "anchor.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Anchor DNS backdoor used by Conti/TrickBot"
+  # Mutexes
+  - type: mutex
+    value: "Global\\eJqkOmBXAfuVdIrjdE"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti ransomware execution mutex"
+  - type: mutex
+    value: "Global\\MicrosoftUpdate_v2"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti Cobalt Strike beacon mutex"
+  - type: mutex
+    value: "TrickBot_Mutex_1122"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/trickbot"
+    description: "TrickBot mutex preventing double execution"
+  - type: mutex
+    value: "Global\\{CDC31B78-C9B2-4C95-B3E6-D4A1B2E9F3A7}"
+    severity: high
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti v3 unique run mutex"
+  # Network IPs
+  - type: network_ip
+    value: "167.71.13.196"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti C2 server — documented in FBI alert"
+  - type: network_ip
+    value: "185.99.133.246"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti exfiltration endpoint"
+  - type: network_ip
+    value: "82.118.21.1"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti/BazarLoader C2 server"
+  - type: network_ip
+    value: "195.123.246.138"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Conti affiliate staging server"
+  - type: network_ip
+    value: "194.58.56.251"
+    severity: high
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti leaked infrastructure IP"
+  - type: network_ip
+    value: "31.131.21.184"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "TrickBot C2 used in Conti campaigns"
+  # File paths
+  - type: file_path
+    value: "\\AppData\\Roaming\\Trickbot"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/trickbot"
+    description: "TrickBot data directory"
+  - type: file_path
+    value: "C:\\Users\\Public\\Documents\\conti.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti payload drop location"
+  - type: file_path
+    value: "readme.txt"
+    severity: medium
+    citation: "https://www.bleepingcomputer.com/tag/conti/"
+    description: "Conti ransom note filename"
+  - type: file_path
+    value: "HOW_TO_GET_MY_FILES.txt"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti v1/v2 ransom note filename"
+  - type: file_path
+    value: "\\AppData\\Local\\wceaux.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Windows Credential Editor dropped by Conti for credential theft"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\dllhost32.exe"
+    severity: high
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti fake dllhost persistence binary"
+  # Registry keys
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Conti"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti Run key persistence"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Userinit"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti Userinit hijack for persistence"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\TrickBot"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/trickbot"
+    description: "TrickBot service registration"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\ZoneMap\\Ranges"
+    severity: medium
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti disables IE Enhanced Security"
+  # Additional indicators
+  - type: process_name
+    value: "bazarbackdoor.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "BazarBackdoor used for Conti post-exploitation"
+  - type: process_name
+    value: "systembc.exe"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "SystemBC proxy used by Conti affiliates"
+  - type: network_ip
+    value: "23.19.227.147"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Cobalt Strike C2 used in Conti campaigns"
+  - type: network_ip
+    value: "89.208.105.53"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Conti BazarLoader staging server"
+  - type: network_ip
+    value: "5.2.78.118"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti admin panel server"
+  - type: file_path
+    value: "\\ProgramData\\Microsoft\\Windows\\Caches\\conti.bin"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti encrypted configuration cache"
+  - type: file_path
+    value: "\\Temp\\csrss.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Conti csrss.exe impersonation in Temp"
+  - type: mutex
+    value: "Global\\BazarBackdoor_Running"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/bazarbackdoor"
+    description: "BazarBackdoor mutex"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\trickbot.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/trickbot"
+    description: "TrickBot App Path registration"
+  - type: process_name
+    value: "adfind.exe"
+    severity: medium
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "ADFind used by Conti for AD reconnaissance"
+  - type: process_name
+    value: "nltest.exe"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "nltest used by Conti for domain enumeration"
+  - type: network_ip
+    value: "103.19.62.154"
+    severity: high
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti leaks-identified C2"
+  - type: network_ip
+    value: "185.215.113.66"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti data leak site backend"
+  - type: file_path
+    value: "\\Windows\\Temp\\aaa_TouchMeNot_.txt"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti touch file — marks encrypted directories"
+  - type: mutex
+    value: "Global\\ryuk_nk"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/ryuk"
+    description: "Ryuk mutex shared with early Conti infrastructure"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers\\conti.exe"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/conti-ransomware-gang/"
+    description: "Conti AppCompat entry for privilege escalation"
+  - type: network_ip
+    value: "91.218.114.11"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti Anchor_DNS C2 server"
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\etc\\hosts.bak"
+    severity: medium
+    citation: "https://www.trellix.com/en-us/about/newsroom/stories/threat-labs/conti-leaks-examining-the-panama-papers-of-ransomware.html"
+    description: "Conti modifies hosts file (backup found)"
+  - type: process_name
+    value: "wevtutil.exe"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/publications/FBI-CISA-AA21-265A-Conti-Ransomware.pdf"
+    description: "Conti clears Windows event logs via wevtutil"
+  - type: network_ip
+    value: "81.19.212.100"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/wizard_spider"
+    description: "Conti TrickBot distribution server"

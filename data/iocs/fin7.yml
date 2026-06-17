@@ -1,0 +1,203 @@
+actor: "FIN7"
+description: "FIN7 / Carbanak / Carbon Spider — financially-motivated eCrime indicators"
+references:
+  - "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+  - "https://www.justice.gov/opa/pr/three-members-notorious-international-cybercrime-group-fin7-custody-charges-attacking-over"
+  - "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+indicators:
+  # Process names
+  - type: process_name
+    value: "boostwrite.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 BOOSTWRITE in-memory loader"
+  - type: process_name
+    value: "diceloader.exe"
+    severity: critical
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 Lizar/DICELOADER RAT"
+  - type: process_name
+    value: "SQLRat.exe"
+    severity: critical
+    citation: "https://www.flashpoint-intel.com/blog/fin7-revisited-inside-astra-panel-and-sqlrat-malware/"
+    description: "FIN7 SQLRat fileless malware using SQL stored procedures"
+  - type: process_name
+    value: "pillowmint.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "FIN7 PILLOWMINT POS memory scraper"
+  - type: process_name
+    value: "babymetal.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 BABYMETAL downloader"
+  - type: process_name
+    value: "grouper.exe"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 Group Policy auditing tool for lateral movement"
+  # Mutexes
+  - type: mutex
+    value: "Global\\FIN7_BOOSTWRITE_MUTEX"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "BOOSTWRITE execution mutex"
+  - type: mutex
+    value: "Global\\{23E9E4D1-27D3-4B7F-9C1A-5F3E6D89A231}"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 Lizar RAT mutex"
+  - type: mutex
+    value: "CARBANAK_MUTEX_MAIN"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak main execution mutex"
+  - type: mutex
+    value: "Global\\SQLRat_Instance_9A2F"
+    severity: critical
+    citation: "https://www.flashpoint-intel.com/blog/fin7-revisited-inside-astra-panel-and-sqlrat-malware/"
+    description: "SQLRat anti-reexecution mutex"
+  # Network IPs
+  - type: network_ip
+    value: "46.161.40.51"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "FIN7 C2 server — confirmed by Mandiant"
+  - type: network_ip
+    value: "91.218.114.25"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 BOOSTWRITE C2 server"
+  - type: network_ip
+    value: "195.123.221.175"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 ransomware pivot server"
+  - type: network_ip
+    value: "212.114.52.138"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 affiliate staging C2"
+  - type: network_ip
+    value: "45.153.240.130"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "FIN7 phishing kit infrastructure"
+  # File paths
+  - type: file_path
+    value: "\\AppData\\Roaming\\Microsoft\\Windows\\Recent\\AutomaticDestinations\\fin7loader.dll"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 loader DLL in AutomaticDestinations"
+  - type: file_path
+    value: "C:\\Windows\\AppPatch\\Custom\\Custom64\\fin7bot.dll"
+    severity: critical
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 AppPatch shim persistence DLL"
+  - type: file_path
+    value: "\\ProgramData\\CorporateFinance\\statement.js"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 JS downloader phishing payload"
+  - type: file_path
+    value: "\\Windows\\Temp\\pdflite.exe"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "FIN7 PDF Lite tool masquerade payload"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\wbem\\wmiapsrv.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak WMI service masquerade"
+  # Registry keys
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\Load"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 Windows Load key persistence"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\InstalledSDB"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 application compatibility shim database entry"
+  - type: registry_key
+    value: "HKCU\\Software\\FIN7\\Config"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 configuration stored in registry"
+  # Additional
+  - type: process_name
+    value: "lizar.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lizar"
+    description: "Lizar post-exploitation framework"
+  - type: process_name
+    value: "termite.exe"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 Termite proxy tool"
+  - type: network_ip
+    value: "89.248.171.60"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 Lizar C2 server"
+  - type: network_ip
+    value: "46.29.238.35"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 BOOSTWRITE secondary C2"
+  - type: mutex
+    value: "Global\\Lizar_RAT_Mutex_11A"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lizar"
+    description: "Lizar RAT single-instance mutex"
+  - type: file_path
+    value: "\\ProgramData\\Adobe\\ARM\\1.0\\fin7.tmp"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 temp artefact in Adobe ARM directory"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\WBEM\\CIMOM\\fin7persist"
+    severity: critical
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 WMI consumer persistence key"
+  - type: process_name
+    value: "colonoscopy.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "FIN7 COLONOSCOPY backdoor (named after internal FIN7 toolset)"
+  - type: network_ip
+    value: "107.181.187.132"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 REvil pivot infrastructure"
+  - type: network_ip
+    value: "37.140.199.80"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 affiliate exfil server"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\tzsync.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 fake timezone sync service executable"
+  - type: mutex
+    value: "Global\\PILLOWMINT_POS_SCRAPER"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/fin7-evolution-and-the-phishing-lure-landscape"
+    description: "PILLOWMINT POS scraper mutex"
+  - type: network_ip
+    value: "185.86.149.211"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/mahalo-fin7-responding-to-new-tools-and-techniques"
+    description: "FIN7 JSSLoader C2 server"
+  - type: file_path
+    value: "\\Temp\\OfficeDoc_Payload.doc.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/fin7"
+    description: "FIN7 document-based dropper double extension"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\TaskSynchronize"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/carbon-spider-embraces-big-game-hunting-part-1/"
+    description: "FIN7 fake task synchronizer persistence"

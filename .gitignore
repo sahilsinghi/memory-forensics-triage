@@ -1,0 +1,17 @@
+.venv/
+*.pyc
+__pycache__/
+*.raw
+*.mem
+*.vmem
+*.dmp
+reports/
+*.log
+.DS_Store
+dist/
+*.egg-info/
+build/
+.pytest_cache/
+*.lime
+*.vmss
+*.vmsn

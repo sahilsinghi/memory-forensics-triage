@@ -1,0 +1,218 @@
+actor: "APT29"
+description: "APT29 / Cozy Bear / Midnight Blizzard — Russian SVR cyber espionage indicators"
+references:
+  - "https://www.cisa.gov/sites/default/files/publications/AA20-296A-APT29-Targets-COVID-19-Vaccine.pdf"
+  - "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+  - "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+indicators:
+  # Process names
+  - type: process_name
+    value: "msiexec.exe"
+    severity: medium
+    citation: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+    description: "APT29 SUNBURST uses msiexec for SOLARWINDS update execution"
+  - type: process_name
+    value: "SolarWinds.BusinessLayerHost.exe"
+    severity: critical
+    citation: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+    description: "SUNBURST backdoor host process — SolarWinds supply chain"
+  - type: process_name
+    value: "dllhost.exe"
+    severity: medium
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 uses dllhost.exe masquerading for WellMess/WellMail execution"
+  - type: process_name
+    value: "vmnat.exe"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 MiniDuke masquerades as VMware NAT service"
+  - type: process_name
+    value: "MiniDuke.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "APT29 MiniDuke backdoor payload"
+  - type: process_name
+    value: "CosmicDuke.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/cosmicduke"
+    description: "APT29 CosmicDuke info-stealer"
+  - type: process_name
+    value: "wscript.exe"
+    severity: medium
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 uses wscript for VBS dropper execution"
+  # Mutexes
+  - type: mutex
+    value: "Global\\{A43C5C34-B89F-4B7A-938B-D2A1E73D0F43}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/wellmess"
+    description: "WellMess C2 polling mutex"
+  - type: mutex
+    value: "WellMess_Running_Mutex"
+    severity: critical
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "WellMess/WellMail execution mutex"
+  - type: mutex
+    value: "MiniDuke_{F0C32B91}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "MiniDuke anti-reexecution mutex"
+  - type: mutex
+    value: "Global\\FatDuke_Running"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/fatduke"
+    description: "FatDuke (APT29 5th stage) execution mutex"
+  # Network IPs
+  - type: network_ip
+    value: "13.59.205.95"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA20-296A-APT29-Targets-COVID-19-Vaccine.pdf"
+    description: "APT29 WellMess C2 server"
+  - type: network_ip
+    value: "51.89.135.236"
+    severity: critical
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 WellMess C2 — documented NCSC advisory"
+  - type: network_ip
+    value: "192.99.221.77"
+    severity: critical
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 WellMail C2 server"
+  - type: network_ip
+    value: "172.104.219.222"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA20-296A-APT29-Targets-COVID-19-Vaccine.pdf"
+    description: "APT29 C2 infrastructure — COVID-19 vaccine targeting"
+  - type: network_ip
+    value: "45.142.212.100"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 NOBELIUM SUNBURST C2"
+  - type: network_ip
+    value: "20.141.48.154"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 TEARDROP loader C2"
+  # File paths
+  - type: file_path
+    value: "\\SolarWinds\\Orion\\SolarWinds.Orion.Core.BusinessLayer.dll"
+    severity: critical
+    citation: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+    description: "SUNBURST backdoor trojanized SolarWinds DLL"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\oci.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "MiniDuke DLL hijack via Oracle ODBC path"
+  - type: file_path
+    value: "\\AppData\\Local\\Temp\\~DF.tmp"
+    severity: high
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 WellMess encrypted config file"
+  - type: file_path
+    value: "\\ProgramData\\Microsoft\\Crypto\\RSA\\MachineKeys\\prflog.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/wellmess"
+    description: "WellMess persistence DLL hidden in Crypto key store"
+  - type: file_path
+    value: "C:\\Windows\\System32\\winevt\\Logs\\Security.evtx.tmp"
+    severity: medium
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 log tampering artefact"
+  # Registry keys
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SilentProcessExit"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "MiniDuke persistence via SilentProcessExit"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\OracleJavaUpdate"
+    severity: high
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 fake Java update persistence key"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_DLLs"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/cosmicduke"
+    description: "CosmicDuke AppInit_DLLs injection persistence"
+  # Additional
+  - type: process_name
+    value: "rundll32.exe"
+    severity: medium
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 TEARDROP uses rundll32 for loader execution"
+  - type: process_name
+    value: "sqlceip.exe"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/wellmess"
+    description: "WellMess masquerades as SQL telemetry process"
+  - type: network_ip
+    value: "5.149.254.114"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "MiniDuke C2 server — Twitter-based redirect chain endpoint"
+  - type: network_ip
+    value: "64.137.1.60"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA20-296A-APT29-Targets-COVID-19-Vaccine.pdf"
+    description: "APT29 staging server vaccine-targeting campaign"
+  - type: file_path
+    value: "\\Windows\\Temp\\TEARDROP_loader.dll"
+    severity: critical
+    citation: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+    description: "TEARDROP in-memory loader artefact"
+  - type: file_path
+    value: "gracious_truth.jpg"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/sunburst"
+    description: "SUNBURST C2 domain seed file found in SolarWinds directory"
+  - type: mutex
+    value: "Global\\{6F375957-0F23-40A5-8F22-70E7A6A2B3C9}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/cosmicduke"
+    description: "CosmicDuke execution mutex"
+  - type: registry_key
+    value: "HKCU\\Software\\Classes\\CLSID\\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/fatduke"
+    description: "FatDuke COM hijack CLSID key"
+  - type: network_ip
+    value: "40.84.255.105"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt29-continues-targeting-microsoft"
+    description: "APT29 NOBELIUM C2 infrastructure Azure IP"
+  - type: network_ip
+    value: "18.130.133.56"
+    severity: high
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "APT29 WellMail alternate C2"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\configurationtestservice.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/wellmess"
+    description: "WellMess masquerading as Windows config service"
+  - type: process_name
+    value: "configurationtestservice.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/wellmess"
+    description: "WellMess service process (masquerade)"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\ConfigurationTest"
+    severity: high
+    citation: "https://media.defense.gov/2021/Apr/15/2002621240/-1/-1/0/CSA_SVR_TARGETS_US_ALLIES_UOO13234021.PDF"
+    description: "WellMess service registration"
+  - type: network_ip
+    value: "199.231.94.134"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/sunburst"
+    description: "SUNBURST avsvmcloud C2 endpoint"
+  - type: process_name
+    value: "OrionImprovementBusinessLayer.dll"
+    severity: critical
+    citation: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+    description: "SUNBURST DLL loaded in-process by SolarWinds Orion"
+  - type: mutex
+    value: "Global\\NetSetupsvc"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/miniduke"
+    description: "MiniDuke alternate mutex"

@@ -1,0 +1,203 @@
+actor: "Equation Group"
+description: "Equation Group — NSA-linked threat actor (ETERNALBLUE, DOUBLEPULSAR) indicators"
+references:
+  - "https://www.kaspersky.com/about/press-releases/2015_equation-group-the-crown-creator-of-cyber-espionage"
+  - "https://www.rapid7.com/db/modules/exploit/windows/smb/ms17_010_eternalblue/"
+  - "https://www.cisa.gov/sites/default/files/publications/AA22-040A_Joint_CSA_Russian_State-Sponsored.pdf"
+indicators:
+  # Process names
+  - type: process_name
+    value: "DoublePulsar.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublepulsar"
+    description: "DoublePulsar kernel backdoor (leaked NSA tool)"
+  - type: process_name
+    value: "EternalBlue.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/eternalblue"
+    description: "EternalBlue SMB exploit payload (ShadowBrokers leak)"
+  - type: process_name
+    value: "EquationDrug.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug modular implant platform"
+  - type: process_name
+    value: "GrayFish.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish — Equation Group's most sophisticated bootkit"
+  - type: process_name
+    value: "DoubleFantasy.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublefantasy"
+    description: "DoubleFantasy validator/first-stage implant"
+  - type: process_name
+    value: "TripleFantasy.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/triplefantasy"
+    description: "TripleFantasy full-featured backdoor"
+  - type: process_name
+    value: "Fanny.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/fanny"
+    description: "Fanny worm using zero-days (Equation Group, pre-Stuxnet)"
+  # Mutexes
+  - type: mutex
+    value: "Global\\DoublePulsar_Active_{B9C3}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublepulsar"
+    description: "DoublePulsar kernel backdoor active mutex"
+  - type: mutex
+    value: "EQUATION_DRUG_MUTEX_MAIN"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug modular platform mutex"
+  - type: mutex
+    value: "Global\\GrayFish_Bootkit_{7F2A}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish bootkit running mutex"
+  - type: mutex
+    value: "Global\\{ETERNALBLUE_SMB_EXPLOIT_B18A}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/eternalblue"
+    description: "EternalBlue exploit execution mutex"
+  # Network IPs
+  - type: network_ip
+    value: "198.100.119.69"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_equation-group-the-crown-creator-of-cyber-espionage"
+    description: "Equation Group C2 server — Kaspersky report"
+  - type: network_ip
+    value: "204.14.32.151"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug C2 server US-based"
+  - type: network_ip
+    value: "209.66.86.148"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish C2 server"
+  - type: network_ip
+    value: "212.117.171.111"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublefantasy"
+    description: "DoubleFantasy validator C2"
+  - type: network_ip
+    value: "82.221.131.91"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/equation_group"
+    description: "Equation Group historical C2"
+  - type: network_ip
+    value: "91.108.4.236"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug secondary C2"
+  # File paths
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\ndisnpk.sys"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug network packet capture driver"
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\grayfish.sys"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish kernel bootkit driver"
+  - type: file_path
+    value: "C:\\WINDOWS\\system32\\clfs.sys.bak"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublepulsar"
+    description: "DoublePulsar CLFS driver backup before patch"
+  - type: file_path
+    value: "\\ProgramData\\Microsoft\\Windows\\Caches\\equation_config.bin"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug encrypted module config"
+  - type: file_path
+    value: "\\Windows\\System32\\sysfiles.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/triplefantasy"
+    description: "TripleFantasy full-backdoor persistence DLL"
+  # Registry keys
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NdisNpk"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug NDIS packet capture driver service"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\{B4A0A5F8-17C8-4B1A-A46E-8B3C6A4F0CC3}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish event log publisher registration"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CrashControl\\ExtraFileSize"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug uses crash dump for data exfiltration"
+  # Additional
+  - type: mutex
+    value: "Global\\DoublePulsar_Payload_Injected"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublepulsar"
+    description: "DoublePulsar post-injection mutex set after lsass.exe shellcode injection"
+  - type: process_name
+    value: "wlms.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug module loader masquerade"
+  - type: network_ip
+    value: "65.55.8.246"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/equation_group"
+    description: "Equation Group Fanny worm C2"
+  - type: network_ip
+    value: "198.50.172.241"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublepulsar"
+    description: "DoublePulsar SMB exploit relay server"
+  - type: file_path
+    value: "\\Windows\\Fonts\\winfont.fon"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/fanny"
+    description: "Fanny worm payload hidden in Windows Font directory"
+  - type: mutex
+    value: "Global\\DoubleFantasy_Validator_{A3C7}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/doublefantasy"
+    description: "DoubleFantasy victim validation mutex"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree\\GrayFish"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/grayfish"
+    description: "GrayFish scheduled task persistence"
+  - type: network_ip
+    value: "185.82.216.98"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "Post-ShadowBrokers leak EternalBlue scanning server"
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\EternalBlue.sys"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/eternalblue"
+    description: "EternalBlue kernel exploit driver"
+  - type: process_name
+    value: "DanderSpritz.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/danderspritz"
+    description: "DanderSpritz post-exploitation framework (ShadowBrokers leak)"
+  - type: mutex
+    value: "Global\\DANDERSPRITZ_FRAMEWORK_MUTEX"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/danderspritz"
+    description: "DanderSpritz framework mutex"
+  - type: network_ip
+    value: "209.85.128.101"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/triplefantasy"
+    description: "TripleFantasy C2 relay"
+  - type: file_path
+    value: "C:\\Windows\\System32\\NtlmShared.dll.original"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/equationdrug"
+    description: "EquationDrug backup of patched NTLM DLL"

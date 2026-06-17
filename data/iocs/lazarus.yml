@@ -1,0 +1,213 @@
+actor: "Lazarus"
+description: "Lazarus Group / HIDDEN COBRA — DPRK state-sponsored threat actor indicators"
+references:
+  - "https://www.cisa.gov/sites/default/files/2022-04/aa22-108a-north-korea-sponsored-cyber-actors-use-maui-ransomware.pdf"
+  - "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+  - "https://www.mandiant.com/resources/blog/apt38-details-on-new-north-korean-regime-backed-threat-group"
+indicators:
+  # Process names
+  - type: process_name
+    value: "Maui.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2022-04/aa22-108a-north-korea-sponsored-cyber-actors-use-maui-ransomware.pdf"
+    description: "Lazarus Maui ransomware payload targeting healthcare"
+  - type: process_name
+    value: "BlindEagle.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus BlindEagle RAT payload"
+  - type: process_name
+    value: "NukeSped.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped/HOPLIGHT backdoor used by Lazarus"
+  - type: process_name
+    value: "HOPLIGHT.exe"
+    severity: critical
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-100A"
+    description: "HOPLIGHT trojan proxy tool"
+  - type: process_name
+    value: "ELECTRICFISH.exe"
+    severity: critical
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-129A"
+    description: "ELECTRICFISH tunnel tool for C2 traffic"
+  - type: process_name
+    value: "FastCash.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt38-details-on-new-north-korean-regime-backed-threat-group"
+    description: "FASTCash payment switch attack tool (APT38)"
+  - type: process_name
+    value: "WhisperGate.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+    description: "WhisperGate wiper masquerading as ransomware"
+  # Mutexes
+  - type: mutex
+    value: "Global\\KProcessHacker2"
+    severity: critical
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-100A"
+    description: "HOPLIGHT process manipulation mutex"
+  - type: mutex
+    value: "Lazarus_Mutex_{B4D39FE1}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped run-once mutex"
+  - type: mutex
+    value: "Global\\SyncMgrHlp"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus loader anti-double-exec mutex"
+  - type: mutex
+    value: "ThreatNeedle_Mutex_2021"
+    severity: critical
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle backdoor (Lazarus campaign 2021)"
+  # Network IPs
+  - type: network_ip
+    value: "192.119.68.116"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2022-04/aa22-108a-north-korea-sponsored-cyber-actors-use-maui-ransomware.pdf"
+    description: "Lazarus Maui ransomware C2"
+  - type: network_ip
+    value: "45.33.2.79"
+    severity: critical
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-100A"
+    description: "HOPLIGHT C2 server"
+  - type: network_ip
+    value: "77.83.247.81"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+    description: "Lazarus crypto exchange attack C2"
+  - type: network_ip
+    value: "103.238.225.160"
+    severity: critical
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle C2 server identified by Kaspersky"
+  - type: network_ip
+    value: "185.35.136.236"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped C2 staging server"
+  - type: network_ip
+    value: "194.165.16.99"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt38-details-on-new-north-korean-regime-backed-threat-group"
+    description: "APT38 SWIFT banking C2"
+  - type: network_ip
+    value: "23.81.246.84"
+    severity: high
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-129A"
+    description: "ELECTRICFISH tunnel endpoint"
+  # File paths
+  - type: file_path
+    value: "\\Windows\\System32\\GFX64.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped fake GFX driver DLL"
+  - type: file_path
+    value: "\\ProgramData\\Google\\Chrome\\updater.exe"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+    description: "Lazarus Chrome update masquerade for persistence"
+  - type: file_path
+    value: "\\Windows\\Temp\\SvcRun.exe"
+    severity: high
+    citation: "https://www.us-cert.gov/ncas/analysis-reports/ar19-100A"
+    description: "HOPLIGHT secondary payload"
+  - type: file_path
+    value: "\\AppData\\Roaming\\Identities\\{...}\\Microsoft\\Stationery\\update.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus loader in Outlook identity folder"
+  - type: file_path
+    value: "C:\\Intel\\Logs\\igfxEM.dll"
+    severity: high
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle DLL disguised as Intel graphics module"
+  # Registry keys
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\GFXUpdate"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped persistence via fake GPU updater"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\svchost.exe"
+    severity: high
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle IFEO debugger hijack on svchost"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\Load"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/apt38-details-on-new-north-korean-regime-backed-threat-group"
+    description: "APT38 Load key persistence mechanism"
+  # Additional
+  - type: process_name
+    value: "ThreatNeedle.exe"
+    severity: critical
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle backdoor executable"
+  - type: process_name
+    value: "Dtrack.exe"
+    severity: critical
+    citation: "https://securelist.com/my-name-is-dtrack/93338/"
+    description: "Dtrack financial sector espionage tool"
+  - type: network_ip
+    value: "84.38.134.160"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2022-04/aa22-108a-north-korea-sponsored-cyber-actors-use-maui-ransomware.pdf"
+    description: "Maui ransomware exfil endpoint"
+  - type: network_ip
+    value: "102.165.62.82"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/dtrack"
+    description: "Dtrack C2 server"
+  - type: file_path
+    value: "\\Users\\Public\\Documents\\AdobeUpdateHelper.exe"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+    description: "Lazarus fake Adobe helper persistence"
+  - type: mutex
+    value: "Global\\DTRACK_INSTANCE"
+    severity: critical
+    citation: "https://securelist.com/my-name-is-dtrack/93338/"
+    description: "Dtrack run mutex"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\IgfxEM"
+    severity: high
+    citation: "https://securelist.com/lazarus-threatneedle/100803/"
+    description: "ThreatNeedle Intel graphics service registration"
+  - type: network_ip
+    value: "210.114.62.61"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus Korean-language C2 server"
+  - type: network_ip
+    value: "5.61.27.159"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/lazarus-group-cryptocurrency-attacks/"
+    description: "Lazarus crypto exchange attack proxy"
+  - type: file_path
+    value: "\\Temp\\CrashDumps\\svchost_update.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/hoplight"
+    description: "HOPLIGHT secondary payload staging"
+  - type: process_name
+    value: "LazaLoader.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus Group custom loader"
+  - type: mutex
+    value: "Global\\{FF934879-0B47-4EFB-A312-45C3591E2A7B}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/hoplight"
+    description: "HOPLIGHT anti-analysis mutex"
+  - type: network_ip
+    value: "95.110.190.132"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lazarus_group"
+    description: "Lazarus infrastructure — cryptocurrency targeting"
+  - type: registry_key
+    value: "HKCU\\Software\\AppDataLow\\Software\\Microsoft\\Windows\\CurrentVersion\\FastShipping"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/nukesped"
+    description: "NukeSped encrypted config storage"

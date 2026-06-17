@@ -1,0 +1,203 @@
+actor: "DarkSide"
+description: "DarkSide ransomware / Carbon Spider — Colonial Pipeline attackers"
+references:
+  - "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+  - "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+  - "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+indicators:
+  # Process names
+  - type: process_name
+    value: "darkside.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide primary ransomware payload"
+  - type: process_name
+    value: "d3d10warp.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide masquerading as DirectX WARP rasterizer"
+  - type: process_name
+    value: "SystemBC.exe"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "SystemBC proxy tool used for DarkSide persistence"
+  - type: process_name
+    value: "beacon.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "Cobalt Strike beacon used in DarkSide initial phase"
+  - type: process_name
+    value: "DarkSide_decryptor.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide victim decryption tool (left on system as taunt)"
+  - type: process_name
+    value: "sfc.exe"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide abuses sfc.exe to disable Windows file protection"
+  # Mutexes
+  - type: mutex
+    value: "Global\\{B8A31C18-A1E9-4C3B-8F97-E6C3D9B4A128}"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide primary execution mutex — CISA advisory"
+  - type: mutex
+    value: "Global\\DarkSide_Ransomware_Running"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide anti-reexecution mutex"
+  - type: mutex
+    value: "Global\\{9FCE4888-E57B-4F95-B5C5-A2A5A4E89F12}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/darkside"
+    description: "DarkSide v2 execution mutex"
+  - type: mutex
+    value: "Global\\SystemBC_Proxy_Active"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "SystemBC proxy running mutex"
+  # Network IPs
+  - type: network_ip
+    value: "185.220.101.35"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide C2 server — CISA confirmed"
+  - type: network_ip
+    value: "185.220.102.8"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide C2 server secondary node"
+  - type: network_ip
+    value: "176.103.62.45"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide exfiltration server"
+  - type: network_ip
+    value: "45.32.192.14"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "DarkSide affiliate Cobalt Strike team server"
+  - type: network_ip
+    value: "84.32.188.57"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/darkside"
+    description: "DarkSide data leak site backend"
+  - type: network_ip
+    value: "195.2.253.99"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "Colonial Pipeline attack C2 node"
+  # File paths
+  - type: file_path
+    value: "C:\\Users\\Public\\darkside.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide payload drop location"
+  - type: file_path
+    value: "README.{victim_id}.TXT"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide ransom note with victim-specific ID"
+  - type: file_path
+    value: "\\Windows\\Temp\\d3d10warp_setup.msi"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/darkside"
+    description: "DarkSide fake DirectX MSI installer"
+  - type: file_path
+    value: "C:\\ProgramData\\Mozilla\\darkside_log.txt"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide operation log hidden in Mozilla directory"
+  - type: file_path
+    value: "\\Windows\\System32\\tasks\\DarkSchedule"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide scheduled task for execution"
+  # Registry keys
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\DarkUpdate"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide persistence via Run key"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\DarkSide"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide main configuration key"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SystemBC"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "SystemBC proxy service persistence"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList\\DarkAdmin"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide hidden admin account in Winlogon"
+  # Additional
+  - type: process_name
+    value: "Mimikatz.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "Mimikatz used by DarkSide for credential harvesting"
+  - type: process_name
+    value: "vssadmin.exe"
+    severity: medium
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide deletes shadow copies via vssadmin"
+  - type: network_ip
+    value: "87.251.67.40"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/darkside"
+    description: "DarkSide affiliate C2 server"
+  - type: network_ip
+    value: "84.38.129.62"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide data exfil upload endpoint"
+  - type: mutex
+    value: "Global\\CS_Beacon_{COLONIAL_2021}"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "Cobalt Strike beacon mutex in Colonial Pipeline attack"
+  - type: file_path
+    value: "C:\\Windows\\Temp\\7z.exe"
+    severity: medium
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "DarkSide uses 7zip for data compression before exfil"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers\\darkside.exe"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide AppCompat bypass flag"
+  - type: process_name
+    value: "rclone.exe"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide uses rclone for cloud exfiltration"
+  - type: network_ip
+    value: "94.232.42.109"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/darkside"
+    description: "DarkSide rclone destination server"
+  - type: file_path
+    value: "C:\\Users\\Public\\rclone.conf"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "rclone configuration file with DarkSide cloud exfil targets"
+  - type: mutex
+    value: "Global\\DarkSide_VSS_Delete_Done"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/darkside-ransomware/"
+    description: "DarkSide mutex set after VSS deletion to prevent retries"
+  - type: network_ip
+    value: "162.247.74.201"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/publications/AA21-131A_Darkside_Ransomware.pdf"
+    description: "DarkSide Tor exit node used for payments"
+  - type: file_path
+    value: "C:\\ProgramData\\SystemBC\\systembc.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/shining-a-light-on-darkside-ransomware-operations"
+    description: "SystemBC proxy executable"

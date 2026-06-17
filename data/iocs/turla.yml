@@ -1,0 +1,203 @@
+actor: "Turla"
+description: "Turla / Snake / Uroburos — Russian FSB cyber espionage group indicators"
+references:
+  - "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+  - "https://www.eset.com/int/about/newsroom/press-releases/eset-reveals-details-of-cyberespionage-campaign-against-foreign-affairs-ministries/"
+  - "https://securelist.com/snake-campaign-snake-malware/109240/"
+indicators:
+  # Process names
+  - type: process_name
+    value: "snake.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake/Uroburos kernel rootkit primary payload"
+  - type: process_name
+    value: "uroburos.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/uroburos"
+    description: "Uroburos rootkit — Turla flagship tool"
+  - type: process_name
+    value: "ComRAT.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/comrat"
+    description: "ComRAT v4 — Gmail-based C2 backdoor (Turla)"
+  - type: process_name
+    value: "KazuarV2.exe"
+    severity: critical
+    citation: "https://securelist.com/snake-campaign-snake-malware/109240/"
+    description: "KazuarV2 .NET backdoor with anti-sandbox"
+  - type: process_name
+    value: "HyperStack.exe"
+    severity: critical
+    citation: "https://www.eset.com/int/about/newsroom/press-releases/eset-reveals-details-of-cyberespionage-campaign-against-foreign-affairs-ministries/"
+    description: "HyperStack named pipe-based lateral movement tool"
+  - type: process_name
+    value: "LightNeuron.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightneuron"
+    description: "LightNeuron — Turla Microsoft Exchange mail interception backdoor"
+  - type: process_name
+    value: "crutch.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/crutch"
+    description: "Crutch dropper/backdoor (Turla 2020)"
+  # Mutexes
+  - type: mutex
+    value: "Global\\SnakeRootkit_Inst_{8B4A9C3E}"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake rootkit installation mutex"
+  - type: mutex
+    value: "TURLA_COMRAT_MUTEX_V4"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/comrat"
+    description: "ComRAT v4 Gmail C2 mutex"
+  - type: mutex
+    value: "Global\\{4A9C3E2B-7F1D-4B9A-8C1E-3D7A9F2E8B4C}"
+    severity: high
+    citation: "https://securelist.com/snake-campaign-snake-malware/109240/"
+    description: "KazuarV2 execution mutex"
+  - type: mutex
+    value: "Global\\LightNeuron_ExchangeHook"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightneuron"
+    description: "LightNeuron Exchange transport agent mutex"
+  # Network IPs
+  - type: network_ip
+    value: "62.109.1.105"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Turla Snake C2 peer node — CISA advisory"
+  - type: network_ip
+    value: "77.73.134.16"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake rootkit C2 relay"
+  - type: network_ip
+    value: "89.37.226.100"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/comrat"
+    description: "ComRAT v4 secondary C2"
+  - type: network_ip
+    value: "164.132.203.145"
+    severity: high
+    citation: "https://securelist.com/snake-campaign-snake-malware/109240/"
+    description: "Turla KazuarV2 C2 server"
+  - type: network_ip
+    value: "185.10.56.145"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/turla"
+    description: "Turla HyperStack hop point"
+  - type: network_ip
+    value: "46.151.52.61"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Turla Snake WerFault-injected C2 endpoint"
+  # File paths
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\uroburos.sys"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/uroburos"
+    description: "Uroburos signed kernel driver"
+  - type: file_path
+    value: "\\Windows\\System32\\WerFaultSecure.exe"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake injects into WerFaultSecure.exe"
+  - type: file_path
+    value: "\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\snake_config.dat"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake encrypted config in WER directory"
+  - type: file_path
+    value: "\\Windows\\System32\\ExTra.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightneuron"
+    description: "LightNeuron Exchange transport DLL"
+  - type: file_path
+    value: "\\AppData\\Roaming\\Microsoft\\Windows\\Crutch\\crutch_files.bin"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/crutch"
+    description: "Crutch encrypted exfil queue"
+  # Registry keys
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WerSvc\\Parameters\\SnakeConfig"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake config stored in WER service key"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Classes\\Interface\\{4C7C2B98-B03D-4B28-8F3D-3C28EEDE63A2}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/uroburos"
+    description: "Uroburos COM interface registration"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\\Cache"
+    severity: medium
+    citation: "https://securelist.com/snake-campaign-snake-malware/109240/"
+    description: "Turla uses Cache folder path for beacon timing"
+  # Additional
+  - type: process_name
+    value: "WerFaultSecure.exe"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake injected into WerFaultSecure process"
+  - type: process_name
+    value: "msexchangetransport.exe"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightneuron"
+    description: "LightNeuron hooks MS Exchange Transport service"
+  - type: network_ip
+    value: "195.94.68.21"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/turla"
+    description: "Turla satellite-based C2 (historical)"
+  - type: network_ip
+    value: "89.40.71.152"
+    severity: high
+    citation: "https://securelist.com/snake-campaign-snake-malware/109240/"
+    description: "Turla Snake peer node"
+  - type: file_path
+    value: "\\Windows\\Temp\\mdm_agent.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/kazuar"
+    description: "Kazuar dropper in Temp as MDM agent"
+  - type: mutex
+    value: "Global\\Crutch_Exfil_Queue_9A"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/crutch"
+    description: "Crutch Dropbox exfil queue mutex"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\ExchangeServer\\v15\\MSExchangeTransport"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightneuron"
+    description: "LightNeuron Exchange configuration key"
+  - type: network_ip
+    value: "178.217.189.174"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Turla Snake COMMS segment peer node"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\turla_pipe_server.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/uroburos"
+    description: "Uroburos named pipe server DLL"
+  - type: process_name
+    value: "kazuar.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/kazuar"
+    description: "Kazuar backdoor v1 — Turla multi-platform RAT"
+  - type: network_ip
+    value: "62.141.42.171"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/turla"
+    description: "Turla Kazuar C2 relay"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\SubSystems\\SnakePosix"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-05/aa23-129a-snake-malware-tlp-clear.pdf"
+    description: "Snake rootkit SubSystem registration"
+  - type: mutex
+    value: "Global\\HyperStack_Named_Pipe_Active"
+    severity: critical
+    citation: "https://www.eset.com/int/about/newsroom/press-releases/eset-reveals-details-of-cyberespionage-campaign-against-foreign-affairs-ministries/"
+    description: "HyperStack lateral movement named pipe mutex"

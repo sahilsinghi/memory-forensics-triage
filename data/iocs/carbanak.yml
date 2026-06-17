@@ -1,0 +1,198 @@
+actor: "Carbanak"
+description: "Carbanak banking trojan group — financial sector attacks across 30+ countries"
+references:
+  - "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+  - "https://www.europol.europa.eu/newsroom/news/mastermind-behind-eur-1-billion-cyber-bank-robbery-arrested-spain"
+  - "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+indicators:
+  # Process names
+  - type: process_name
+    value: "carbanak.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak primary banking trojan payload"
+  - type: process_name
+    value: "googleupdate.exe"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak masquerading as Google Updater"
+  - type: process_name
+    value: "svchost86.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak fake svchost variant"
+  - type: process_name
+    value: "CaptureDll.dll"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak screen capture module"
+  - type: process_name
+    value: "videorecorder.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak video recording component for ATM targeting"
+  - type: process_name
+    value: "amsvc.exe"
+    severity: critical
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak ATM monitoring service"
+  # Mutexes
+  - type: mutex
+    value: "Global\\CARBANAK_MAIN_GATE"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak C2 main gate mutex"
+  - type: mutex
+    value: "Global\\{FFFFFFFF-0000-0000-C000-000000000046}"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak COM gateway mutex (malformed GUID)"
+  - type: mutex
+    value: "GoogLeUpdateMutex_{C1E78}"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak fake Google Update mutex"
+  - type: mutex
+    value: "Global\\Carbanak_ScreenCapture_Mutex"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak screen capture module mutex"
+  # Network IPs
+  - type: network_ip
+    value: "213.186.33.6"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak primary C2 server — OVH France"
+  - type: network_ip
+    value: "93.184.208.102"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak C2 relay server Eastern Europe"
+  - type: network_ip
+    value: "195.22.26.248"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak exfiltration server"
+  - type: network_ip
+    value: "46.4.204.78"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak C2 Hetzner Germany"
+  - type: network_ip
+    value: "31.220.43.38"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak secondary C2 server"
+  # File paths
+  - type: file_path
+    value: "\\Windows\\System32\\taskhost32.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak fake task host binary"
+  - type: file_path
+    value: "C:\\ProgramData\\Microsoft\\Windows\\carbanak.bin"
+    severity: critical
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak encrypted config binary"
+  - type: file_path
+    value: "\\Windows\\System32\\ATMMonitor.dll"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak ATM monitoring DLL"
+  - type: file_path
+    value: "\\Program Files\\Common Files\\microsoft shared\\MSInfo\\carbanak_screengrab.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak screenshot capture DLL"
+  - type: file_path
+    value: "\\Windows\\Temp\\vid_capture.avi"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak banking operator screen recording"
+  # Registry keys
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\GoogleUpdateService"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak fake Google Update service persistence"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\ATMMonitor"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak ATM monitor persistence"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\Browser Helper Objects\\{B4B1CF68-E177-4C2C-AE3C-3C9D81893A5E}"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak IE BHO for online banking credential theft"
+  # Additional
+  - type: process_name
+    value: "rdpclip.exe"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak uses RDP clipboard tool for lateral movement"
+  - type: process_name
+    value: "mimiatz.exe"
+    severity: critical
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Mimikatz variant used by Carbanak for credential dumping"
+  - type: network_ip
+    value: "188.40.75.132"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak C2 final exfil server"
+  - type: network_ip
+    value: "188.120.231.197"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak early-stage staging server"
+  - type: mutex
+    value: "Global\\VideoCapture_Carbanak"
+    severity: high
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak video capture module mutex"
+  - type: file_path
+    value: "\\Program Files\\Mozilla Firefox\\plugin-container.exe"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak hijacks Firefox plugin container"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Internet Explorer\\Extensions\\{B4B1CF68-E177-4C2C-AE3C-3C9D81893A5E}"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak IE extension for banking site overlay"
+  - type: process_name
+    value: "netsh.exe"
+    severity: medium
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak uses netsh for firewall bypass"
+  - type: network_ip
+    value: "5.35.246.209"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak Russian-language C2 server"
+  - type: network_ip
+    value: "185.25.50.93"
+    severity: critical
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak SWIFT targeting server"
+  - type: file_path
+    value: "\\Users\\Default\\Documents\\1C_accounting_update.exe"
+    severity: high
+    citation: "https://securelist.com/the-carbanak-fin7-syndicate/84822/"
+    description: "Carbanak dropper targeting Russian accounting software users"
+  - type: mutex
+    value: "Global\\Microsoft_ATM_Service_Mutex"
+    severity: critical
+    citation: "https://www.kaspersky.com/about/press-releases/2015_kaspersky-lab-uncovers-carbanak-apt"
+    description: "Carbanak ATM service mutex for XFS hook"
+  - type: network_ip
+    value: "46.183.220.67"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak bank-targeting secondary C2"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run\\svchost32"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/carbanak"
+    description: "Carbanak WOW64 persistence key"

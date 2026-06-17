@@ -1,0 +1,208 @@
+actor: "APT41"
+description: "APT41 / Double Dragon / Barium — Chinese dual espionage/cybercrime actor indicators"
+references:
+  - "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+  - "https://www.justice.gov/opa/pr/seven-international-cyber-defendants-including-apt41-actors-charged-connection-computer"
+  - "https://www.crowdstrike.com/blog/double-dragon-apt41-chinese-espionage-cybercrime/"
+indicators:
+  # Process names
+  - type: process_name
+    value: "Derusbi.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/derusbi"
+    description: "Derusbi (PHOTO) RAT used by APT41"
+  - type: process_name
+    value: "PlugX.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX RAT — APT41 primary espionage payload"
+  - type: process_name
+    value: "KeyBoy.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/keyboy"
+    description: "KeyBoy RAT targeting SE Asia — APT41 affiliate"
+  - type: process_name
+    value: "MESSAGETAP.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/messagetap-who-is-reading-your-text-messages"
+    description: "MESSAGETAP telecoms intercept tool (APT41)"
+  - type: process_name
+    value: "Speculoos.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "Speculoos backdoor — Citrix CVE-2019-19781 exploitation"
+  - type: process_name
+    value: "ShadowPad.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad modular backdoor shared across Chinese APTs"
+  - type: process_name
+    value: "crosswalk.exe"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "CROSSWALK (PROTON) backdoor — APT41 macOS/Windows"
+  # Mutexes
+  - type: mutex
+    value: "Global\\PlugX_Inst_{AE39F241}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX installation mutex"
+  - type: mutex
+    value: "DERUSBI_RUNNING_MUTEX"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/derusbi"
+    description: "Derusbi RAT execution mutex"
+  - type: mutex
+    value: "Global\\ShadowPad_2021_{C9B2}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad modular backdoor mutex"
+  - type: mutex
+    value: "APT41_CrossWalk_Mutex"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "CROSSWALK backdoor mutex"
+  # Network IPs
+  - type: network_ip
+    value: "119.28.139.120"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "APT41 C2 server — confirmed DOJ indictment"
+  - type: network_ip
+    value: "27.102.113.240"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/apt41"
+    description: "APT41 PlugX C2 server"
+  - type: network_ip
+    value: "45.76.211.115"
+    severity: critical
+    citation: "https://www.crowdstrike.com/blog/double-dragon-apt41-chinese-espionage-cybercrime/"
+    description: "APT41 Cobalt Strike C2"
+  - type: network_ip
+    value: "172.107.231.236"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad C2 relay node"
+  - type: network_ip
+    value: "206.188.197.228"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "APT41 MESSAGETAP C2 infrastructure"
+  - type: network_ip
+    value: "180.149.49.15"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/apt41"
+    description: "APT41 espionage campaign C2"
+  # File paths
+  - type: file_path
+    value: "\\Windows\\System32\\PlugX.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX DLL in System32 (dropper-installed)"
+  - type: file_path
+    value: "\\ProgramData\\Intel\\plugx_config.bin"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX encrypted configuration blob"
+  - type: file_path
+    value: "\\Windows\\SysWOW64\\hkpak.dll"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "APT41 hollowed legitimate DLL"
+  - type: file_path
+    value: "\\Users\\Public\\Libraries\\Derusbi.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/derusbi"
+    description: "Derusbi RAT DLL staging location"
+  - type: file_path
+    value: "\\AppData\\Roaming\\Adobe\\Flash Player\\NativeCache\\ShadowPad.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad DLL masquerading in Flash directory"
+  # Registry keys
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\calc.exe"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX IFEO debugger shim on calculator"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\IntelGFX"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad persistence via fake Intel GFX"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Classes\\AppID\\{1B1F472E-3221-4826-97DB-2C2324D389AE}"
+    severity: high
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "APT41 COM object registration for persistence"
+  # Additional
+  - type: process_name
+    value: "higaisa.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/higaisa"
+    description: "Higaisa (APT41 affiliate) payload"
+  - type: process_name
+    value: "lightspy.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/lightspy"
+    description: "LightSpy mobile/desktop spyware (APT41)"
+  - type: network_ip
+    value: "103.107.104.67"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX variant C2 server"
+  - type: network_ip
+    value: "89.35.178.181"
+    severity: high
+    citation: "https://www.crowdstrike.com/blog/double-dragon-apt41-chinese-espionage-cybercrime/"
+    description: "APT41 exploitation relay server"
+  - type: file_path
+    value: "C:\\ProgramData\\Microsoft\\PlayReady\\SDKVersionReadme.dll"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/derusbi"
+    description: "Derusbi DLL masquerading in PlayReady directory"
+  - type: mutex
+    value: "Global\\KeyBoy_Mutex_3B9C"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/keyboy"
+    description: "KeyBoy RAT mutex"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\PlugXSvc"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/plugx"
+    description: "PlugX service persistence"
+  - type: network_ip
+    value: "45.9.148.33"
+    severity: critical
+    citation: "https://www.mandiant.com/resources/blog/apt41-us-government-charges"
+    description: "APT41 Speculoos backdoor C2"
+  - type: file_path
+    value: "\\Windows\\System32\\wbem\\wmiprvsd.dll"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/shadowpad"
+    description: "ShadowPad DLL hijack in WMI directory"
+  - type: network_ip
+    value: "112.213.89.111"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/apt41"
+    description: "APT41 supply-chain attack C2 server"
+  - type: process_name
+    value: "Winnti.exe"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/winnti"
+    description: "Winnti rootkit — APT41 gaming sector attacks"
+  - type: mutex
+    value: "Global\\Winnti_Mutex_{F7A23B4C}"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/winnti"
+    description: "Winnti rootkit execution mutex"
+  - type: network_ip
+    value: "223.166.0.12"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/winnti"
+    description: "Winnti rootkit C2 server Asia-Pacific"
+  - type: file_path
+    value: "\\Windows\\System32\\drivers\\winnti.sys"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/family/winnti"
+    description: "Winnti kernel rootkit driver"

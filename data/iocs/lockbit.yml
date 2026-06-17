@@ -1,0 +1,271 @@
+actor: "LockBit"
+description: "LockBit 2.0 and 3.0 (LockBit Black) ransomware group indicators"
+references:
+  - "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+  - "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+indicators:
+  # Process names
+  - type: process_name
+    value: "lockbit.exe"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit primary encryption payload"
+  - type: process_name
+    value: "LB3.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit 3.0 builder-generated payload"
+  - type: process_name
+    value: "msupdate.exe"
+    severity: high
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit masquerading as Windows Update"
+  - type: process_name
+    value: "svchost32.exe"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit fake svchost loader"
+  - type: process_name
+    value: "sqlceip.exe"
+    severity: medium
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit masquerading as SQL telemetry service"
+  # Mutexes
+  - type: mutex
+    value: "Global\\{BEF7C86E-11D7-6B75-D7A0-7D6E4DA89768}"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit 3.0 primary mutex — prevents double execution"
+  - type: mutex
+    value: "{1CD21E80-D0F0-4B3B-B39E-5E7E8C08AE4F}"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit 3.0 secondary execution mutex"
+  - type: mutex
+    value: "Global\\MicrosoftWindowsNT_Mutex_MF"
+    severity: high
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit 2.0 mutex variant"
+  - type: mutex
+    value: "Global\\{E0F54C41-6D11-4590-AAD7-8FD65B12E5C1}"
+    severity: high
+    citation: "https://any.run/malware-trends/lockbit"
+    description: "LockBit 2.0 mutex variant B"
+  # Network IPs (from public blocklists and reports)
+  - type: network_ip
+    value: "185.220.101.45"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit C2 — Tor exit node used for initial access"
+  - type: network_ip
+    value: "185.220.103.5"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit C2 relay node"
+  - type: network_ip
+    value: "193.56.28.103"
+    severity: critical
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit 3.0 exfiltration server"
+  - type: network_ip
+    value: "45.227.253.98"
+    severity: high
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit affiliate C2 server"
+  - type: network_ip
+    value: "198.50.191.95"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lockbit"
+    description: "LockBit 3.0 C2 infrastructure"
+  - type: network_ip
+    value: "185.246.188.73"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit STO infrastructure"
+  # File paths
+  - type: file_path
+    value: "\\AppData\\Roaming\\LockBit"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit payload staging directory"
+  - type: file_path
+    value: "C:\\ProgramData\\lockbit"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit data exfiltration temp folder"
+  - type: file_path
+    value: "\\Temp\\lb3.exe"
+    severity: critical
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit 3.0 dropped binary"
+  - type: file_path
+    value: "RestoreMyFiles.txt"
+    severity: high
+    citation: "https://www.bleepingcomputer.com/news/security/lockbit-ransomware-now-encrypts-windows-domain-using-group-policies/"
+    description: "LockBit 3.0 ransom note filename"
+  - type: file_path
+    value: "LockBit_Ransomware.hta"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit HTA ransom note"
+  - type: file_path
+    value: "\\Windows\\System32\\tasks\\LockBit"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit scheduled task for persistence"
+  - type: file_path
+    value: "\\AppData\\Local\\Temp\\lockbitBlack"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit Black temporary artifact"
+  # Registry keys
+  - type: registry_key
+    value: "HKCU\\Software\\LockBit3"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit 3.0 configuration storage"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\LockBit"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit system-wide registry key"
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\LockBit"
+    severity: critical
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit persistence via Run key"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LockBitS"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit service persistence"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\SystemRestore"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit disables system restore via policy"
+  # Additional network IPs
+  - type: network_ip
+    value: "89.44.9.243"
+    severity: high
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lockbit"
+    description: "LockBit affiliate exfil server"
+  - type: network_ip
+    value: "185.163.45.48"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit payment portal backend"
+  - type: network_ip
+    value: "185.186.245.175"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit 3.0 C2 Europe node"
+  - type: network_ip
+    value: "46.166.161.93"
+    severity: high
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit affiliate infrastructure"
+  # Additional process names
+  - type: process_name
+    value: "StealBit.exe"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit 3.0 data exfiltration tool StealBit"
+  - type: process_name
+    value: "steal.exe"
+    severity: critical
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit data theft component"
+  - type: process_name
+    value: "PDFRankingsR.exe"
+    severity: medium
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit disguised dropper"
+  # Additional file paths
+  - type: file_path
+    value: "RECOVER-MY-FILES.txt"
+    severity: high
+    citation: "https://www.bleepingcomputer.com/news/security/new-lockbit-ransomware-sample-suggests-imminent-lockbit-3-0-launch/"
+    description: "LockBit 2.0 ransom note"
+  - type: file_path
+    value: "\\Users\\Public\\Desktop\\LockBit_Ransomware.ico"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit icon dropped to desktop"
+  - type: file_path
+    value: "\\Windows\\System32\\wbem\\wmiprvse.exe.lb3"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit encrypting system binaries"
+  # Additional mutexes
+  - type: mutex
+    value: "Global\\LockBit_Mutex_7D3E"
+    severity: critical
+    citation: "https://any.run/malware-trends/lockbit"
+    description: "LockBit affiliate custom mutex"
+  - type: mutex
+    value: "LOCKBITPANEL"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit panel communication mutex"
+  # Additional registry
+  - type: registry_key
+    value: "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\LockBit"
+    severity: high
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit Winlogon hijack persistence"
+  - type: registry_key
+    value: "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\LockBit"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit Safe Mode persistence for evading AV"
+  - type: network_ip
+    value: "94.232.41.105"
+    severity: critical
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit affiliate server Eastern Europe"
+  - type: network_ip
+    value: "31.184.254.119"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit C2 secondary relay"
+  - type: file_path
+    value: "\\ProgramData\\Microsoft\\Windows\\Caches\\LB3Config.bin"
+    severity: critical
+    citation: "https://unit42.paloaltonetworks.com/lockbit-3-ransomware/"
+    description: "LockBit 3.0 encrypted configuration file"
+  - type: file_path
+    value: "\\AppData\\Roaming\\Microsoft\\Windows\\SendTo\\lb3.lnk"
+    severity: high
+    citation: "https://any.run/malware-trends/lockbit"
+    description: "LockBit shortcut for self-spreading"
+  - type: process_name
+    value: "wmic.exe"
+    severity: medium
+    citation: "https://www.cisa.gov/sites/default/files/2023-03/AA23-075A_LockBit_3.0_Ransomware.pdf"
+    description: "LockBit uses wmic for shadow copy deletion"
+  - type: process_name
+    value: "vssadmin.exe"
+    severity: medium
+    citation: "https://www.sentinelone.com/labs/lockbit-3-0-update-unpicking-the-ransomwares-latest-anti-analysis-and-evasion-techniques/"
+    description: "LockBit deletes VSS backups via vssadmin"
+  - type: mutex
+    value: "Global\\{A34F8E4B-13F9-4122-B7E1-5E2D1C9B92F8}"
+    severity: high
+    citation: "https://any.run/malware-trends/lockbit"
+    description: "LockBit 2.0 unique run mutex"
+  - type: registry_key
+    value: "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\taskmgr.exe"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit IFEO hijack to block Task Manager"
+  - type: network_ip
+    value: "147.78.47.149"
+    severity: critical
+    citation: "https://malpedia.caad.fkie.fraunhofer.de/actor/lockbit"
+    description: "LockBit 3.0 C2 Netherlands relay"
+  - type: network_ip
+    value: "5.255.103.237"
+    severity: high
+    citation: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-lockbit"
+    description: "LockBit exfil endpoint"
