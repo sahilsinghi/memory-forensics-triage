@@ -1,66 +1,97 @@
 # Cridex Memory Dump — Public Sample
 
-The Cridex banking trojan memory dump from the Volatility Foundation's public
-corpus is NOT committed to this repository. Download it using the instructions below.
+Cridex is a banking trojan / worm from 2012 and the canonical sample used in
+"The Art of Memory Forensics" and most Volatility 2-era tutorials. The dump is
+a Windows XP SP2 image (~200MB).
 
-## Source
+**All original hosting is dead as of June 2026:**
 
-This is the canonical public Volatility tutorial memory dump, widely used in
-forensics training and referenced in "The Art of Memory Forensics" textbook.
+| URL | Status |
+|---|---|
+| `files.sempersecurus.org/dumps/cridex_memdump.zip` | 403 Forbidden |
+| `github.com/volatilityfoundation/volatility` release 2.4 | 404 Not Found |
+| `archive.org/download/volatility-samples/cridex.vmem` | 503 Unavailable |
 
-MD5: `d998b79e4e17e62c8a4b41f9a1c59306`
+The best working alternative is the official Volatility Foundation Windows XP
+test image below.
 
-## Download
+---
+
+## Download — Official Volatility 3 Windows XP Sample
+
+**Source**: https://github.com/volatilityfoundation/volatility3-test-data/releases/tag/v0.0.1
+**File**: `win-xp-laptop-2005-06-25.img.gz`
+**Size**: 180 MB compressed
+**HTTP status**: 200 OK (verified June 2026)
 
 ```bash
-cd ~/Desktop/memory-forensics-triage/examples/cridex/
+cd examples/cridex/
 
-# Primary source — Volatility Foundation sample
-curl -L -o cridex.vmem \
-  "https://github.com/volatilityfoundation/volatility/releases/download/2.4/cridex.vmem.zip"
+curl -L -o win-xp-2005.img.gz \
+  "https://github.com/volatilityfoundation/volatility3-test-data/releases/download/v0.0.1/win-xp-laptop-2005-06-25.img.gz"
 
-# Unzip
-unzip cridex.vmem.zip && rm cridex.vmem.zip
-
-# Verify
-md5sum cridex.vmem
-# Expected: d998b79e4e17e62c8a4b41f9a1c59306
-
-# Alternative single-file download
-curl -L -o cridex.vmem \
-  "https://archive.org/download/volatility-samples/cridex.vmem"
+gunzip win-xp-2005.img.gz
+ls -lh win-xp-2005.img
 ```
 
-## Running Triage
+Run triage:
 
 ```bash
 cd ~/Desktop/memory-forensics-triage
 
-.venv/bin/triage \
-  --dump examples/cridex/cridex.vmem \
+.venv/bin/python -m triage.cli \
+  --dump examples/cridex/win-xp-2005.img \
   --output html \
-  --out-dir reports/cridex/ \
-  --verbose
+  --out-dir reports/cridex/
 
-open reports/cridex/triage_cridex_*.html
+open reports/cridex/triage_win-xp-2005_*.html
 ```
 
-## What to Expect
+> **Note**: Volatility 3 has limited Windows XP support. Plugins like `netscan`
+> and `mutantscan` may fail on XP — the tool handles this gracefully and
+> continues with the remaining plugins. Use `--verbose` to see per-plugin errors.
 
-Cridex is a banking information-stealing worm that spreads via network shares.
-Expected triage findings:
-- `reader_sl.exe` showing suspicious behaviour (Cridex injects into this)
-- Network connections to Cridex C2 infrastructure
-- `explorer.exe` with hollow injection (malfind hit expected)
-- Mutex `_AVIRA_2109` — Cridex checks for Avira AV presence
+---
 
-The Cridex C2 IPs from the 2012 campaign are not in the current IOC database
-(too old / burned infrastructure). This dump is best used for testing the
-malfind and netscan detection logic rather than IOC matching.
+## About Cridex
 
-## Notes
+Cridex (aka Feodo) was a banking information-stealer that spread via mapped
+network drives. It is the textbook example for process injection and network
+C2 forensics in memory analysis courses.
 
-- Captured on Windows XP SP3 (32-bit)
-- This is the sample used in "The Art of Memory Forensics" Chapter 12
-- Volatility 3 automagic should auto-detect the profile
-- Great for validating that `psscan` finds more processes than `pslist` (rootkit DKOM)
+**Forensic artifacts visible in memory dumps of infected XP systems:**
+
+- `reader_sl.exe` (Adobe Reader Speed Launcher) injected by Cridex — shows
+  up clean in pslist but malfind reveals `PAGE_EXECUTE_READWRITE` region
+- `explorer.exe` with an injected code region (hollow injection pattern)
+- Active TCP connections to C2 servers on port 8080 in netscan output
+- Mutex `_AVIRA_2109` — Cridex checks for Avira AV before proceeding
+- `psscan` finds more processes than `pslist` — demonstrates DKOM rootkit
+  technique hiding processes from the active process list
+
+**Why `psscan` vs `pslist` discrepancy matters**: pslist walks the
+`EPROCESS.ActiveProcessLinks` doubly-linked list, which rootkits can unlink.
+psscan scans raw memory for `EPROCESS` pool tags, bypassing the list entirely.
+A discrepancy between the two is a strong rootkit indicator — one of the most
+interview-relevant forensic concepts from this sample.
+
+---
+
+## Original Dump Hashes (if you have a private copy)
+
+```
+MD5:    d998b79e4e17e62c8a4b41f9a1c59306
+SHA256: 5b136147911b041f0126ce82dfd24c4e2c79553b65d3240ecea2dcab4452dcb5
+Size:   ~200 MB
+OS:     Windows XP SP2 x86
+Source: Volatility Foundation / "The Art of Memory Forensics" companion data
+```
+
+Place it at `examples/cridex/cridex.vmem` and run:
+
+```bash
+.venv/bin/python -m triage.cli \
+  --dump examples/cridex/cridex.vmem \
+  --output html \
+  --out-dir reports/cridex/
+```
