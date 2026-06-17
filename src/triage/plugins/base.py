@@ -60,7 +60,8 @@ def run_volatility_plugin(plugin_class, dump_path: str, profile: Optional[str] =
         accumulator.append(row)
         return accumulator
 
-    result.visit(visitor, rows)
+    # visit(node, function, initial_accumulator) — node=None starts from root
+    result.visit(None, visitor, rows)
 
     duration = time.time() - start
     logger.debug(
